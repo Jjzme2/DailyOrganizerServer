@@ -5,7 +5,6 @@ WEB-INF
 
 # Engines + Database + CBFS + Secrets
 .env
-.env.*
 .engine/**
 .cbfs/**
 build/.db/**
