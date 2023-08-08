@@ -1,0 +1,11 @@
+{
+    "name":"dailyOrganize",
+    "web":{
+        "http":{
+            "port":64919
+        },
+        "rewrites":{
+            "enable":true
+        }
+    }
+}
