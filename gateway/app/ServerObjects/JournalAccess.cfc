@@ -145,7 +145,7 @@
 		<cfset var columnName = "">
 
 		<cfif useName>
-			<cfset columnName = "t.name">
+			<cfset columnName = "t.journalName">
 		<cfelse>
 			<cfset columnName = "t.id">
 		</cfif>
@@ -262,60 +262,4 @@
 
 		<cfreturn referencingTables>
 	</cffunction>
-
-	<cffunction name="search" access="package" returntype="query" output="false" hint="Search for journals by name">
-		<cfargument name="search" type="struct" required="true">
-		<cfargument name="formatDate" type="boolean" default="false">
-
-		<cfif NOT structKeyExists(arguments.search, "column")>
-			<cfthrow type="CustomError" message=
-			'{
-				"customMessage": "Error occurred in search()."
-				"errorMessage": "Missing required argument: column"
-			}'>
-			<cfreturn false>
-
-		<cfelseif NOT structKeyExists(arguments.search, "value")>
-			<cfthrow type="CustomError" message=
-			'{
-				"customMessage": "Error occurred in search()."
-				"errorMessage": "Missing required argument: value"
-			}'>
-			<cfreturn false>
-		</cfif>
-
-		<cftry>
-			<cfquery name="search" datasource="#dataSource#">
-				SELECT
-					t.id
-					,t.UserId
-					,t.journalName as journal_name
-					,t.description as short_description
-					<cfif arguments.formatDate>
-						,DATE_FORMAT(t.creationDate, '%M %e, %Y') as created_on
-						,DATE_FORMAT(t.modifiedDate, '%M %e, %Y') as modified_on
-					<cfelse>
-						,t.creationDate as created_on
-						,t.modifiedDate as modified_on
-					</cfif>
-				FROM #tableName# t
-
-				WHERE '#arguments.search.column#' LIKE <cfqueryparam value='%#arguments.search.value#%' cfsqltype="cf_sql_varchar">
-			</cfquery>
-
-			<cfcatch type="any">
-				<cfthrow type="CustomError" message=
-				'{
-					"customMessage": "Error occurred in search()."
-					"errorMessage": "#cfcatch.message#"
-				}'>
-				<cfreturn false>
-			</cfcatch>
-		</cftry>
-
-		<cfreturn search>
-	</cffunction>
-
-
-
 </cfcomponent>

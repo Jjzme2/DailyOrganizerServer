@@ -25,7 +25,7 @@ component extends="coldbox.system.RestHandler" {
 	 * Handle PreFlight Requests
 	 */
 	remote function preFlight( event, rc, prc ){
-		logService.sendLog(message="PreFlight Request Made @ #now()#", prefix="CORS_Preflight");
+		// logService.sendLog(message="PreFlight Request Made @ #now()#", prefix="CORS_Preflight");
 	}
 
 }

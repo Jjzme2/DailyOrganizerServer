@@ -33,7 +33,7 @@ component extends="BaseApi" {
 	}
 
 	remote function search( event, rc, prc ){
-		var target = dataServer.search( {"column"=rc.column, "value"=rc.value} );
+		var target = dataServer.search( column=rc.column, value=rc.value );
 		event.renderData( type="json", data=target );
 	}
 
@@ -52,49 +52,4 @@ component extends="BaseApi" {
 	 * GET FROM JOURNAL
 	 * --------------------------------------------------------------------------------
 	 */
-
-	remote function getBookmarksFromJournal ( event, rc, prc ) {
-		var target = bookmarkServer.getFromJournal( rc.id );
-		event.renderData( type="json", data=target );
-	}
-
-	//TODO:
-	remote function getChecklistsFromJournal ( event, rc, prc ) {
-		var target = checklistServer.getFromJournal( rc.id );
-		event.renderData( type="json", data=target );
-	}
-	//TODO:
-	remote function getEventsFromJournal ( event, rc, prc ) {
-		var target = eventServer.getFromJournal( rc.id );
-		event.renderData( type="json", data=target );
-	}
-	//TODO:
-	// remote function getFavoritesFromJournal ( event, rc, prc ) {
-	// 	var target = favoriteServer.getFromJournal( rc.id );
-	// 	event.renderData( type="json", data=target );
-	// }
-	//TODO:
-	remote function getGoalsFromJournal ( event, rc, prc ) {
-		var target = goalServer.getFromJournal( rc.id );
-		event.renderData( type="json", data=target );
-	}
-	//TODO:
-	remote function getNotesFromJournal ( event, rc, prc ) {
-		var target = noteServer.getFromJournal( rc.id );
-		event.renderData( type="json", data=target );
-	}
-	remote function getQuotesFromJournal ( event, rc, prc ) {
-		var target = quoteServer.getFromJournal( rc.id );
-		event.renderData( type="json", data=target );
-	}
-	//TODO:
-	remote function getToDosFromJournal ( event, rc, prc ) {
-		var target = todoServer.getFromJournal( rc.id );
-		event.renderData( type="json", data=target );
-	}
-	//TODO:
-	remote function getVocabularyFromJournal ( event, rc, prc ) {
-		var target = vocabularyServer.list( rc.id );
-		event.renderData( type="json", data=target );
-	}
 }

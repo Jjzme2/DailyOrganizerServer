@@ -42,7 +42,7 @@
 			controllerDecorator      : "",
 			// Error/Exception Handling
 			invalidHTTPMethodHandler : "",
-			exceptionHandler         : "Echo.onError",
+			exceptionHandler         : "error.onException",
 			invalidEventHandler      : "",
 			customErrorTemplate      : "",
 			// Application Aspects

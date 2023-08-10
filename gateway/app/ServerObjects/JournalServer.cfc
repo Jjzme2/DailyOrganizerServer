@@ -172,17 +172,17 @@ component singleton accessors="true" name="JournalServer" extends="BaseServer" {
 		}
 		return response;
 	}
-
 	public function search(required string column, required string value)
 	{
 		var response = {};
 
 		try{
-			var data  = accessGateway.search({
-				column: column,
-				value: value
-				});
-			response = responder.sendResponse(true, "Search #search# returned:", data);
+			var data =
+				arguments.column == 'name' ?
+				accessGateway.get(searchValue=arguments.value, useName=true, formatDate=true) :
+				accessGateway.get(searchValue=arguments.value, useName=false, formatDate=true);
+
+			response = responder.sendResponse(true, "Search [Column: #arguments.column# | Value: #arguments.value#] returned the data shown.", data);
 		}catch(any e){
 			response = responder.sendResponse(false, serializeJSON(e.message), {})
 			throw(e);

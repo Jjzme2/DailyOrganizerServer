@@ -19,23 +19,14 @@ component singleton accessors="true" name="bookmarkServer" extends="BaseServer" 
 	* ----------------------------------------------------------------------------------------------
 	*/
 
-		/** Might not be needed as we will be creating enemies through the back end.
-		* This will get an empty bookmarkDTO.
-		* @return An empty bookmark DTO.
-		*/
-		public bookmarkDTO function getEmpty ()
-		{
-			return new models.gateway.app.bookmark.bookmarkDTO();
-		}
-
-		/**
-		* This will get an empty bookmark Model, an instance of an bookmark.
-		* @return An empty bookmark Model.
-		*/
-		public bookmark function getEmptyModel ()
-		{
-			return new models.gateway.app.bookmark.bookmarkModel();
-		}
+	/**
+	 * This will get an empty bookmarkDTO.
+	 * @return An empty bookmark DTO.
+	 */
+	public BookmarkDTO function getEmpty()
+	{
+		return new models.DTO.BookmarkDTO();
+	}
 
 
 	/**
@@ -48,13 +39,15 @@ component singleton accessors="true" name="bookmarkServer" extends="BaseServer" 
 		* @param bookmark The bookmark to store.
 		* @return The bookmark that was stored.
 		*/
-		public struct function store(required bookmarkDTO dataToAdd)
+		public struct function store(required struct dataToAdd)
 		{
 			var response = {};
+			var dataObject = populator.populateFromStruct(getEmpty(), arguments.dataToAdd);
+
 			try{
 				// Execute
-				accessGateway.create(dataToAdd);
-				response = responder.sendResponse(true, "bookmark created successfully.", dataToAdd)
+				accessGateway.create(dataObject);
+				response = responder.sendResponse(true, "bookmark created successfully.", dataObject)
 			}
 			catch(any e){
 				response = responder.sendResponse(false, serializeJSON(e.message), {})
@@ -90,7 +83,7 @@ component singleton accessors="true" name="bookmarkServer" extends="BaseServer" 
 		{
 			var response = {};
 			try{
-				var data = accessGateway.getAccessObjectByID(id);
+				var data = accessGateway.get(id);
 				response = responder.sendResponse(true, "bookmark read successfully.", data);
 			}
 			catch(any e){
@@ -161,20 +154,55 @@ component singleton accessors="true" name="bookmarkServer" extends="BaseServer" 
 	*/
 
 	public function getFromJournal(required string id)
-		{
-			var response = {};
+	{
+		var response = {};
 
-			try{
-				// Get the data before deleting it.
-				var data = accessGateway.getFromJournal(id);
-				// Define response
-				response = responder.sendResponse(true, "Bookmarks retrieved successfully from JournalID: (#id#).", data);
-			}
-			catch(any e){
-				response = responder.sendResponse(false, serializeJSON(e.message), {})
-				throw(e);
-			}
-
-			return response;
+		try{
+			// Get the data before deleting it.
+			var data = accessGateway.getFromJournal(id);
+			// Define response
+			response = responder.sendResponse(true, "Bookmarks retrieved successfully from JournalID: (#id#).", data);
 		}
+		catch(any e){
+			response = responder.sendResponse(false, serializeJSON(e.message), {})
+			throw(e);
+		}
+
+		return response;
+	}
+
+	public function getYoutubeURLs(required boolean isYoutube, string journalId)
+	{
+		var response = {};
+
+		try{
+			var data = accessGateway.getYoutubeURLs(isYoutube=isYoutube, journalID=journalId);
+			// Define response
+			response = responder.sendResponse(true, "Videos retrieved successfully", data);
+		}
+		catch(any e){
+			response = responder.sendResponse(false, serializeJSON(e.message), {})
+			throw(e);
+		}
+
+		return response;
+	}
+
+	public function getBySearchTerm(required string searchTerm, string journalId){
+		var response = {};
+
+		try{
+			var data = accessGateway.getBySearchTerm(searchTerm=arguments.searchTerm, journalID=arguments.journalId);
+			// Define response
+			response = responder.sendResponse(true, "URLs containing: [#arguments.searchTerm#] retrieved successfully", data);
+		}
+		catch(any e){
+			response = responder.sendResponse(false, serializeJSON(e.message), {})
+			throw(e);
+		}
+
+		return response;
+	}
+
+
 }

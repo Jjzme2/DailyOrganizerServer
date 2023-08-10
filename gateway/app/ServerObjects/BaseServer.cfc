@@ -6,6 +6,7 @@
  */
 component singleton accessors="true" name="BaseServer" {
 
+	property name="populator"  inject="wirebox:populator";
 	property name="calculator" inject="MathService";
 	property name="responder"  inject="ResponseService";
 
